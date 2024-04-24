@@ -1,0 +1,23 @@
+<mat-card class="example-card">
+    <mat-card-header>
+        <mat-card-title>Hello User!</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+        <p>
+            This is demo for Angular Unit testing!
+        </p>
+        <mat-tab-group>
+            <mat-tab label="MI"> 
+               <app-player-list [playerList]="mumbai"></app-player-list>
+            </mat-tab>
+            <mat-tab label="CSK"> 
+                <app-player-list [playerList]="chennai"></app-player-list>
+            </mat-tab>
+            
+            <mat-tab label="RCB"> 
+                <app-player-list [playerList]="rcb"></app-player-list>
+             </mat-tab>
+        </mat-tab-group>
+    </mat-card-content>
+</mat-card>
