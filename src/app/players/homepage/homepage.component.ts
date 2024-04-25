@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Player } from '../../models/player';
 import { PlayerService } from '../../service/player.service';
+import { PLAYERS } from '../../../../server/data';
 
 @Component({
   selector: 'app-homepage',
@@ -24,9 +25,10 @@ export class HomepageComponent implements OnInit {
 
   reloadData() {
     this.playerService.getAllPlayers().subscribe({
-      next: players => {
-        console.log(players);
-        this.completeData = players;
+      next: payload => {
+        console.log(payload);
+        let data: any = Object.values(payload)[0];
+        this.completeData = data as Player[];
         this.mumbai = this.completeData.filter(player => player.team === 'Mumbai');
         this.chennai = this.completeData.filter(player => player.team === 'Chennai');
         this.rcb = this.completeData.filter(player => player.team === 'Rcb');

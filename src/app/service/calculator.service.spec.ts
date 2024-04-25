@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { CalculatorService } from './calculator.service';
 import { LoggerService } from './logger.service';
 
-xdescribe('CalculatorService', () => {
+describe('CalculatorService', () => {
 
   let calculatorService: CalculatorService,
     loggerSpy: any; // any type as spy objects are of any type

@@ -2,11 +2,12 @@ const express = require("express");
 const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
-app.use(cors({origin: true}));
+app.use(cors({ origin: true }));
 app.use(bodyParser.json());
 
 app.get("/players", (req: any, res: any) => {
-    res.json( [
+    res.json({
+        payload: [
             {
                 "firstName": "Rohit",
                 "lastName": "Sharma",
@@ -38,9 +39,10 @@ app.get("/players", (req: any, res: any) => {
                 "team": "Rcb"
             }
         ]
+    }
     )
 });
 
-const httpServer:any = app.listen(9000, () => {
+const httpServer: any = app.listen(9000, () => {
     console.log("HTTP REST API Server running at http://localhost:" + httpServer.address().port);
 });
