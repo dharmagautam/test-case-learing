@@ -8,16 +8,25 @@
             This is demo for Angular Unit testing!
         </p>
         <mat-tab-group>
-            <mat-tab label="MI"> 
-               <app-player-list [playerList]="mumbai"></app-player-list>
-            </mat-tab>
-            <mat-tab label="CSK"> 
-                <app-player-list [playerList]="chennai"></app-player-list>
-            </mat-tab>
-            
-            <mat-tab label="RCB"> 
-                <app-player-list [playerList]="rcb"></app-player-list>
-             </mat-tab>
+            <ng-container *ngIf="mumbai?.length > 0">
+                <mat-tab label="MI">
+                    <div class="list-head">Mumbai</div>
+                    <app-player-list [playerList]="mumbai"></app-player-list>
+                </mat-tab>
+            </ng-container>
+            <ng-container *ngIf="chennai?.length > 0">
+                <mat-tab label="CSK">
+                    <div class="list-head">Chennai</div>
+                    <app-player-list [playerList]="chennai"></app-player-list>
+                </mat-tab>
+            </ng-container>
+            <ng-container *ngIf="rcb?.length > 0">
+                <mat-tab label="RCB">
+                    <div class="list-head">Bangalore</div>
+                    <app-player-list [playerList]="rcb"></app-player-list>
+                </mat-tab>
+            </ng-container>
+
         </mat-tab-group>
     </mat-card-content>
 </mat-card>
