@@ -1,5 +1,5 @@
 import { DebugElement } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, flush, tick, waitForAsync } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
 import { MatTabsModule } from '@angular/material/tabs';
 import { BrowserModule, By } from '@angular/platform-browser';
@@ -79,7 +79,9 @@ describe('HomepageComponent', () => {
 
   })
 
-  it('should display Mumbai players list when clicked', (done: DoneFn) => {
+
+  // Using timeout here because tab switching takes time
+  it('should display Mumbai players list when clicked - using DoneFn', (done: DoneFn) => {
     playerService.getAllPlayers.and.returnValue(of(PLAYERS_PAYLOAD));
     fixture.detectChanges();
 
@@ -94,4 +96,63 @@ describe('HomepageComponent', () => {
       done();
     }, 500);
   })
+
+
+  // This test should be explained, when we cover async course
+  // We don't need setTimeout now to wait for tab switching to get completed
+  // we can use fakeAsync now
+  it('should display Mumbai players list when clicked - using fakeAsync', fakeAsync(() => {
+    playerService.getAllPlayers.and.returnValue(of(PLAYERS_PAYLOAD));
+    fixture.detectChanges();
+
+    const tabs: any = el.queryAll(By.css('.mdc-tab'));
+    click(tabs[1]);
+    fixture.detectChanges();
+    // this will do the trick
+    flush();
+
+    const tabTitle = el.queryAll(By.css('.list-head'));
+    expect(tabTitle.length).toBeGreaterThan(0);
+    expect(tabTitle[1].nativeElement.textContent).toContain('Chennai');
+  }))
+
+
+  // This test should be explained, when we cover async course
+  // We don't need setTimeout now to wait for tab switching to get completed
+  // we can use fakeAsync now
+  // Using tick(), we know that browser animation module takes 16 ms
+  it('should display Mumbai players list when clicked - using fakeAsync tick',
+    fakeAsync(() => {
+      playerService.getAllPlayers.and.returnValue(of(PLAYERS_PAYLOAD));
+      fixture.detectChanges();
+
+      const tabs: any = el.queryAll(By.css('.mdc-tab'));
+      click(tabs[1]);
+      fixture.detectChanges();
+      // this will do the trick
+      tick(16);
+
+      const tabTitle = el.queryAll(By.css('.list-head'));
+      expect(tabTitle.length).toBeGreaterThan(0);
+      expect(tabTitle[1].nativeElement.textContent).toContain('Chennai');
+    }));
+
+
+  // Below is using waitForAsync
+  it('should display Mumbai players list when clicked - using waitForAsync',
+    waitForAsync(() => {
+      playerService.getAllPlayers.and.returnValue(of(PLAYERS_PAYLOAD));
+      fixture.detectChanges();
+
+      const tabs: any = el.queryAll(By.css('.mdc-tab'));
+      click(tabs[1]);
+      fixture.detectChanges();
+
+      fixture.whenStable().then(() => {
+        console.log('called whenStable');
+        const tabTitle = el.queryAll(By.css('.list-head'));
+        expect(tabTitle.length).toBeGreaterThan(0);
+        expect(tabTitle[1].nativeElement.textContent).toContain('Chennai');
+      });
+    }));
 });
